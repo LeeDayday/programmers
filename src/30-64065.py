@@ -2,37 +2,17 @@
 # 2019 카카오 개발자 겨울 인턴십
 
 
-def get_length(lst):
-    return len(lst)
-
 def solution(s):
     answer = []
-    total_list = []
-    tmp_list = []
+    # 문자열 데이터로부터 튜플 단위 원소 데이터 가져오기 (숫자 + , 형태)
+    data = s[2:-2].split('},{')
+    # 튜플 길이 기준 오름차순 정렬
+    data = sorted(data, key=lambda x:len(x))
     
-    i = 2
-    num = 0
-    while i < len(s) - 1:
-        if s[i] == ',' or s[i] == '}':
-            if num != 0:
-                tmp_list.append(num)
-            num = 0
-            if s[i] == '}':
-                total_list.append(tmp_list)
-                tmp_list = []
-                
-        elif s[i] == '{':
-            pass
-        else:
-            num *= 10
-            num += int(s[i])
-        i += 1
-
-    total_list = sorted(total_list, key=get_length)
-    
-    for i in range(len(total_list)):
-        tmp_list = total_list[i]
-        for num in tmp_list:
-            if num not in answer:
-                answer.append(num)
+    for item in data:
+        # 쉼표 제거 및 원소 정수화
+        item = list(map(int, item.split(',')))
+        for value in item:
+            if value not in answer:
+                answer.append(value)
     return answer
