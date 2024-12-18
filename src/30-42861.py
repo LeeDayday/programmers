@@ -1,30 +1,30 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/42861
 # 탐욕법
 
-def find_parent(parent, x):
-    if parent[x] != x:
-        parent[x] = find_parent(parent, parent[x])
-    return parent[x]
-
-def union(parent, x, y):
-    x = find_parent(parent, x)
-    y = find_parent(parent, y)
-    if x > y:
-        parent[x] = y
-    else:
-        parent[y] = x
+from heapq import heappush, heappop
+from collections import defaultdict
 
 def solution(n, costs):
-    # 비용 오름차순 정렬
-    costs.sort(key=lambda x: x[2])
-    parent = [i for i in range(n)]
-    answer = 0 # 총 다리 건설 비용
+    answer = 0
+    visited = [False] * n
+
+    graph = defaultdict(list)
+    for start, end, weight in costs:
+        graph[start].append((end, weight))
+        graph[end].append((start, weight))
     
-    for cost in costs:
-        s, e, w = cost
-              
-        if find_parent(parent, s) != find_parent(parent, e):
-            union(parent, s, e)
-            answer += w        
-    
+    heap = []
+    heappush(heap, (0, 0)) # 초기 시작 노드, (weight, node)으로 heappush
+
+    while heap:
+        curr_weight, curr_node = heappop(heap)
+        
+        if not visited[curr_node]:
+            answer += curr_weight
+            visited[curr_node] = True
+
+        for new_node, new_weight in graph[curr_node]:
+            if not visited[new_node]:
+                heappush(heap, (new_weight, new_node))
+
     return answer
