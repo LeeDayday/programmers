@@ -1,36 +1,33 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/76502
 # 월간 코드 챌린지 시즌2
 
-def rotate_s(s):
-    return s[1:] + s[0] 
+from collections import deque 
 
 def is_correct(s):
     stack = []
+    matching = {')': '(', ']': '[', '}': '{'}
+    
     for i in range(len(s)):
         # 열린 괄호열은 stack에 push
-        if s[i] == '(' or s[i] == '[' or s[i] == '{':
+        if s[i] in matching.values():
             stack.append(s[i])
         else:
-            # stack이 빈 상태에서 닫힌 괄호열을 push하려는 경우: 잘못된 괄호열
-            if len(stack) == 0:
+            # 잘못된 괄호열: 빈 stack에 닫힌 괄호열을 push하려는 경우, 괄호열 쌍이 일치하지 않는 경우
+            if not stack or matching[s[i]] != stack[-1]:
                 return 0
-            top = stack.pop()
-            # top과 s[i]가 일치하는 괄호쌍인지 확인
-            if (top == '(' and s[i] == ')') or (top == '[' and s[i] == ']') or (top == '{' and s[i] == '}'):
-                continue
-            else:
-                return 0
-        
-    if len(stack) > 0:
+            stack.pop()
+            
+    if stack:
         return 0
     return 1
             
 
 def solution(s):
     answer = 0
-    rotated_s = s
+    s = deque(s)
     for _ in range(len(s)):
-        answer += is_correct(rotated_s)
-        rotated_s = rotate_s(rotated_s)
+        answer += is_correct(s)
+        tmp = s.popleft()
+        s.append(tmp)
     
     return answer
