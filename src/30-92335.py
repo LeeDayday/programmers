@@ -30,12 +30,10 @@ def solution(n, k):
     answer = 0
     result = dec_to_k(n, k)
     
-    start, end = 0, 0
-    while start < len(result):
-        while end < len(result) and result[end] != '0':
-            end += 1
-        answer += is_prime(result[start:end])
-        start = end
-        end += 1
+    for tmp in result.split('0'):
+        if tmp == '':
+            continue
+        answer += is_prime(tmp)
         
     return answer
+
