@@ -2,11 +2,11 @@
 # 카펫
 
 def solution(brown, yellow):
-    area = brown + yellow
-
-    for n in range(1, area // 2 + 1): # n: 세로
-        if area % n == 0:
-            m = area // n # m: 가로
-            if (m - 2) * (n - 2) == yellow:
-                return [m, n]
-    return
+    total = brown + yellow
+    
+    # 약수 찾기 (반만 탐색하여 O(√N)으로 최적화)
+    for num1 in range(1, int(total**0.5) + 1):
+        if total % num1 == 0:
+            num2 = total // num1  # num1과 num2는 약수쌍
+            if (num1 - 2) * (num2 - 2) == yellow:
+                return [max(num1, num2), min(num1, num2)]  # 가로 ≥ 세로 반환
