@@ -1,40 +1,15 @@
-# 복습 - 무인도 여행
-# https://school.programmers.co.kr/learn/courses/30/lessons/154540
+# 복습 - 뒤에 있는 큰 수 찾기
+# https://school.programmers.co.kr/learn/courses/30/lessons/154539
 
-# O(NM + N log N) ≈ O(NM)
-from collections import deque
+# O(N)
 
-dx = [1, -1, 0, 0]
-dy = [0, 0, 1, -1]
-def solution(maps):
-    answer = []
-    n, m = len(maps), len(maps[0])
-    visited = [[False] * (m) for _ in range(n)]
-    def bfs(x, y):
-        result = 0
-        queue = deque([(x, y)])
-        visited[x][y] = True
-        
-        while queue:
-            x, y = queue.popleft()
-            result += int(maps[x][y])
-            for i in range(4):
-                new_x = x + dx[i]
-                new_y = y + dy[i]
-                if 0 <= new_x < n and 0 <= new_y < m:
-                    if not visited[new_x][new_y] and maps[new_x][new_y] != 'X':
-                        queue.append((new_x, new_y))
-                        visited[new_x][new_y] = True
-        
-        return result
-        
-    for i in range(n):
-        for j in range(m):
-            if not visited[i][j] and maps[i][j] != 'X':
-                answer.append(bfs(i, j))
-                
-    if len(answer) == 0:
-        return [-1]
-    answer.sort()
-        
+def solution(numbers):
+    answer = [-1] * len(numbers)
+    stack = [] # 오큰수 update가 필요한 answer 의 index 저장
+    
+    for i in range(len(numbers)):
+        while stack and numbers[stack[-1]] < numbers[i]:
+            answer[stack.pop()] = numbers[i]
+        stack.append(i)
+    
     return answer
