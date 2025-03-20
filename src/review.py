@@ -1,15 +1,24 @@
-# 복습 - 뒤에 있는 큰 수 찾기
-# https://school.programmers.co.kr/learn/courses/30/lessons/154539
+# 복습 - 숫자 변환하기
+# https://school.programmers.co.kr/learn/courses/30/lessons/154538
 
 # O(N)
 
-def solution(numbers):
-    answer = [-1] * len(numbers)
-    stack = [] # 오큰수 update가 필요한 answer 의 index 저장
-    
-    for i in range(len(numbers)):
-        while stack and numbers[stack[-1]] < numbers[i]:
-            answer[stack.pop()] = numbers[i]
-        stack.append(i)
-    
-    return answer
+from collections import deque
+def solution(x, y, n):
+    queue = deque([(x, 0)])
+    visited = {x}
+    while queue:
+        num, cnt = queue.popleft()
+        if num == y:
+            return cnt
+        if num + n not in visited and num + n <= y:
+            visited.add(num + n)
+            queue.append((num + n, cnt + 1))
+        if num * 2 not in visited and num * 2 <= y:
+            visited.add(num * 2)
+            queue.append((num * 2, cnt + 1))
+        if num * 3 not in visited and num * 3 <= y:
+            visited.add(num * 3)
+            queue.append((num * 3, cnt + 1))
+        
+    return -1
