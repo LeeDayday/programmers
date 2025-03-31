@@ -1,24 +1,19 @@
 # 복습 - 숫자 변환하기
-# https://school.programmers.co.kr/learn/courses/30/lessons/154538
+# https://school.programmers.co.kr/learn/courses/30/lessons/152996
 
-# O(N)
+from collections import Counter
 
-from collections import deque
-def solution(x, y, n):
-    queue = deque([(x, 0)])
-    visited = {x}
-    while queue:
-        num, cnt = queue.popleft()
-        if num == y:
-            return cnt
-        if num + n not in visited and num + n <= y:
-            visited.add(num + n)
-            queue.append((num + n, cnt + 1))
-        if num * 2 not in visited and num * 2 <= y:
-            visited.add(num * 2)
-            queue.append((num * 2, cnt + 1))
-        if num * 3 not in visited and num * 3 <= y:
-            visited.add(num * 3)
-            queue.append((num * 3, cnt + 1))
+def solution(weights):
+    answer = 0
+    data = Counter(weights)
+
+    for weight, cnt in data.items():
+        if cnt > 1:
+            answer += cnt * (cnt - 1) // 2 # nC2
         
-    return -1
+        for a, b in [(2, 3), (2, 4), (3, 4)]:
+            if weight * a / b in data:
+                answer += data[weight * a // b] * cnt
+    return answer
+
+print(solution([100,180,360,100,270]))
