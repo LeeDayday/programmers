@@ -1,6 +1,7 @@
 # 복습 - 숫자 변환하기
 # https://school.programmers.co.kr/learn/courses/30/lessons/152996
 
+# O(N)
 from collections import Counter
 
 def solution(weights):
@@ -15,5 +16,3 @@ def solution(weights):
             if weight * a / b in data:
                 answer += data[weight * a // b] * cnt
     return answer
-
-print(solution([100,180,360,100,270]))
