@@ -1,18 +1,22 @@
-# 복습 - 숫자 변환하기
-# https://school.programmers.co.kr/learn/courses/30/lessons/152996
+# 복습 - 올바른 괄호
+# https://school.programmers.co.kr/learn/courses/30/lessons/12909
 
 # O(N)
-from collections import Counter
 
-def solution(weights):
-    answer = 0
-    data = Counter(weights)
-
-    for weight, cnt in data.items():
-        if cnt > 1:
-            answer += cnt * (cnt - 1) // 2 # nC2
-        
-        for a, b in [(2, 3), (2, 4), (3, 4)]:
-            if weight * a / b in data:
-                answer += data[weight * a // b] * cnt
-    return answer
+def solution(s):
+    if len(s) % 2:
+        return False
+    cnt = 0
+    idx = 0
+    while idx < len(s):
+        if s[idx] == ')':
+            cnt -= 1
+            if cnt < 0:
+                return False
+        else:
+            cnt += 1
+        idx += 1
+    if cnt > 0:
+        return False
+            
+    return True
