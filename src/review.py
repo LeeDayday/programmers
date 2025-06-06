@@ -1,18 +1,23 @@
-# 복습 - 두 원 사이의 정수 쌍
-# https://school.programmers.co.kr/learn/courses/30/lessons/181187
+# 복습 - 마법의 엘리베이터
+# https://school.programmers.co.kr/learn/courses/30/lessons/148653
 
 # O(N)
 
-from math import sqrt, ceil
-def solution(r1, r2):
+def solution(storey):
     answer = 0
-    # 1 사분면의 점 개수 구하고 전체에 적용하기
-    for x in range(1, r2 + 1):
-        max_y = int(sqrt(r2 ** 2 - x ** 2))
-        if x < r1:
-            min_y = ceil(sqrt(r1 ** 2 - x ** 2))
+    
+    while storey:
+        r = storey % 10
+        if r > 5:
+            storey += 10
+            answer += 10 - r
+        elif r < 5:
+            answer += r
+        # 5 인 경우, 다음 자리 수까지 고려
         else:
-            min_y = 0
-        # print(f"x={x} 일 때 y의 범위: [{min_y}, {max_y}]")
-        answer += max_y - min_y + 1
-    return answer * 4
+            if ((storey // 10) % 10) > 4:
+                storey += 10
+            answer += r
+        storey //= 10
+            
+    return answer
